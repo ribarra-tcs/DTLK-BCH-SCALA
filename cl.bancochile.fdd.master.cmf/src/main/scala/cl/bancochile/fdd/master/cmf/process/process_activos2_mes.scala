@@ -94,7 +94,7 @@ object process_activos2_mes {
            Df2.createOrReplaceTempView("df_final")
 
            Df2.select("idx","Institucion","periodo_mes").show()
-           //-Unpersist unnecesary data 
+           //Unpersist unnecesary data 
            raw_activos2_mes.DataFramehuemul.DataFrame.unpersist() 
        
        

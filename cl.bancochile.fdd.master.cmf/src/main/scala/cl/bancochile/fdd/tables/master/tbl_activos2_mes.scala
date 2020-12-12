@@ -50,7 +50,7 @@ class tbl_activos2_messys (huemulBigDataGov: huemul_BigDataGovernance, Control: 
 //                                        "cl.bancochile.fdd.master.cmf.process") 
    
 /**********   Columns Information   ****************************************/ 
-  //If table is Transaction. period must be create 
+  //If table is Transaction. period must be created 
     
 
     val id_interfaz = new huemul_Columns (IntegerType,true,"")

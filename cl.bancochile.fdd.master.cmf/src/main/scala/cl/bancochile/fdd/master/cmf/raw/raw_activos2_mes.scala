@@ -124,7 +124,7 @@ class raw_activos2_mes(huemulBigDataGov: huemul_BigDataGovernance, Control: huem
     CurrentSetting.LogSchemaConf.AddColumns("Cabecera negocio","Cabecera logico",StringType,"Es una cabecera",0,0)
 
 
-  //--Pie 	 
+ 	 
 
 
    this.SettingByDate.append(CurrentSetting)
