@@ -12,7 +12,7 @@ class tbl_fac_operacion(huemulBigDataGov: huemul_BigDataGovernance, Control: hue
   //Tipo de tabla, Master y Reference son catalogos sin particiones de periodo 
 
  // this.setTableType(huemulType_Tables.Transaction) 
-  this.setTableType(huemulType_Tables.Master) 
+  this.setTableType(huemulType_Tables.Transaction) 
 
  
   //Base de Datos en HIVE donde sera creada la tabla 
@@ -23,17 +23,17 @@ class tbl_fac_operacion(huemulBigDataGov: huemul_BigDataGovernance, Control: hue
  
  // Partition is set on Business Date available in the File
 
-	//this.setPartitionField ("Period_dia")
+//this.setPartitionField ("periodo_mes")
 
 	
   //Ruta en HDFS donde se guardara el archivo PARQUET 
-  this.setGlobalPaths(huemulBigDataGov.GlobalSettings.MASTER_BigFiles_Path) 
+  this.setGlobalPaths(huemulBigDataGov.GlobalSettings.DIM_BigFiles_Path) 
  
   //Ruta en HDFS especifica para esta tabla (Globalpaths / localPath) 
-  this.setLocalPath("dim/") 
+ // this.setLocalPath("dim/") 
  
   //Frecuencia de actualizacion 
-  this.setFrequency(huemulType_Frequency.NOT_SPECIFIED) 
+  this.setFrequency(huemulType_Frequency.MONTHLY) 
    
   /**********   S E T E O   I N F O R M A T I V O   ****************************************/ 
   //Descripcion de la fuente 
@@ -68,6 +68,7 @@ class tbl_fac_operacion(huemulBigDataGov: huemul_BigDataGovernance, Control: hue
     val periodo_mes = new huemul_Columns (StringType,true,"") 
     periodo_mes.setNullable(false) 
     periodo_mes.setIsPK(true) 
+    periodo_mes.setPartitionColumn(1, dropBeforeInsert = true, oneValuePerProcess = false)
 
 //Set the relationship between Fact and Dimension table
   fk1_tbl_fac_operacion.AddRelationship (tbl_dim_periodo.period_num_periodo,periodo_mes)
