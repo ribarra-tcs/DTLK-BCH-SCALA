@@ -10,7 +10,7 @@ import org.apache.spark.sql.types._
 class tbl_activos1_messys (huemulBigDataGov: huemul_BigDataGovernance, Control: huemul_Control) extends huemul_Table(huemulBigDataGov, Control) with Serializable { 
   /**********   C O N F I G U R A C I O N   D E   L A   T A B L A   ****************************************/ 
   //Tipo de tabla, Master y Reference son catalogos sin particiones de periodo 
-  this.setTableType(huemulType_Tables.Master) 
+  this.setTableType(huemulType_Tables.Transaction) 
  
   //Base de Datos en HIVE donde sera creada la tabla 
   this.setDataBase(huemulBigDataGov.GlobalSettings.MASTER_DataBase) 
@@ -25,7 +25,7 @@ class tbl_activos1_messys (huemulBigDataGov: huemul_BigDataGovernance, Control: 
   this.setLocalPath("cmf/") 
  
   //Frecuencia de actualizacion 
-  this.setFrequency(huemulType_Frequency.NOT_SPECIFIED) 
+  this.setFrequency(huemulType_Frequency.MONTHLY) 
    
   /**********   S E T E O   I N F O R M A T I V O   ****************************************/ 
   //Descripcion de la fuente 
@@ -63,6 +63,7 @@ class tbl_activos1_messys (huemulBigDataGov: huemul_BigDataGovernance, Control: 
     val periodo_mes = new huemul_Columns (StringType,true,"") 
     periodo_mes.setNullable(false) 
     periodo_mes.setIsPK(true)
+    periodo_mes.setPartitionColumn(1, dropBeforeInsert = true, oneValuePerProcess = true)
 
     val Coloc_total = new huemul_Columns (DoubleType,true,"") 
     Coloc_total.setNullable(true) 
