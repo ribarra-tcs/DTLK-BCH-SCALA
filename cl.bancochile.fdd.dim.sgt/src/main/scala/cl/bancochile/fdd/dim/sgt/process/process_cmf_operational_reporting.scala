@@ -70,11 +70,11 @@ object process_cmf_operational_reporting {
       /*************** Operational Reporting with CMF DATALAKE **********************/ 
       Control.NewStep("Building a CMF Operational Reporting of Chilean Banking System - by grouping Tables of DIMENSION LAYER") 
        
-      val Df1 = huemulBigDataGov.spark.sql(s"""select periodo_mes,a.id_institucion,c.producto_nom,cc_mon,lag(cc_mon) over (partition by periodo_mes,nombre_institucion,id_interfaz order by id_cc) as activo_nom_mes_ant,id_cc,id_interfaz from production_dim.tbl_fac_operacion a left join production_dim.tbl_dim_institution b on a.id_institucion = b.id_institucion left join production_dim.tbl_dim_cuentas_contables c on a.id_cc = c.id_cuenta_contable""")
+      val Df1 = huemulBigDataGov.spark.sql(s"""select periodo_mes,a.id_institucion,c.producto_nom,id_cc,cc_mon, lag(cc_mon,1) over (partition by a.id_institucion,c.producto_nom,id_cc order by periodo_mes) as activo_nom_mes_ant from production_dim.tbl_fac_operacion a left join production_dim.tbl_dim_institution b on a.id_institucion = b.id_institucion left join production_dim.tbl_dim_cuentas_contables c on a.id_cc = c.id_cuenta_contable""")
 
 	  Df1.write.partitionBy("periodo_mes","id_institucion").mode(SaveMode.Overwrite).format("parquet").saveAsTable("production_dim.tbl_cmf_operational_report")
 	  
-	  Df1.write.partitionBy("periodo_mes","id_institucion").mode("overwrite").format("parquet").save(s"""hdfs://10.128.0.3/bancochile/gdd/data/master/cmf/cmf_direct_operational_report""")
+	  Df1.write.partitionBy("periodo_mes","id_institucion").mode("overwrite").format("parquet").save(s"""hdfs://10.128.0.3/bancochile/gdd/data/reporting/cmf_direct_operational_report""")
 	  
 	  //Df1.createOrReplaceTempView("df_final") 
        
