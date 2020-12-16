@@ -105,7 +105,7 @@ class tbl_activos2_messys (huemulBigDataGov: huemul_BigDataGovernance, Control: 
     val Act_adeu_bancos_bcentral = new huemul_Columns (DoubleType,true,"") 
     Act_adeu_bancos_bcentral.setNullable(true) 
     Act_adeu_bancos_bcentral.setIsPK(false) 
-   
+
     val Act_cred_cpcac_total = new huemul_Columns (DoubleType,true,"") 
     Act_cred_cpcac_total.setNullable(true) 
     Act_cred_cpcac_total.setIsPK(false) 
@@ -126,7 +126,7 @@ class tbl_activos2_messys (huemulBigDataGov: huemul_BigDataGovernance, Control: 
     Act_cred_cpcac_pers_total.setNullable(true) 
     Act_cred_cpcac_pers_total.setIsPK(false) 
 	
-	val Act_cred_cpcac_pers_prov = new huemul_Columns (DoubleType,true,"") 
+    val Act_cred_cpcac_pers_prov = new huemul_Columns (DoubleType,true,"") 
     Act_cred_cpcac_pers_prov.setNullable(true) 
     Act_cred_cpcac_pers_prov.setIsPK(false) 
 	
@@ -161,8 +161,8 @@ class tbl_activos2_messys (huemulBigDataGov: huemul_BigDataGovernance, Control: 
 	val Coloc_total = new huemul_Columns (DoubleType,true,"") 
     Coloc_total.setNullable(true) 
     Coloc_total.setIsPK(false) 
-   
-  
+    Coloc_total.setDQ_MinDecimalValue(Decimal.apply(0),"COD_ERROR")   
+    Coloc_total.setDQ_MaxDecimalValue(Decimal.apply(100000000),"COD_ERROR") 
     
   //-**********Ejemplo para aplicar DataQuality de Integridad Referencial 
  
