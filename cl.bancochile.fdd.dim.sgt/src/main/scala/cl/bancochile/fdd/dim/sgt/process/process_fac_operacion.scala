@@ -75,17 +75,20 @@ object process_fac_operacion {
       Control.NewStep("Sourcing data from Activos2 Master table for loading fac_operacion") 
        
 	  
-  
+       val proc_date_new : String = huemulBigDataGov.arguments.GetValue("year", null, "Debe especificar el parametro anio,ej:year=2017").toString.concat(huemulBigDataGov.arguments.GetValue("month", null, "Debe especificar el parametro month, ej: month=12")).toString 
        
       /*********************************************************/ 
       /*************** Accessing Master Tables **********************/ 
       /*********************************************************/ 
       Control.NewStep("Accessing Master Layer to retrive Data for Fac Operacion table of CMF-Dimension Layer ") 
       
-      val Df1 = huemulBigDataGov.spark.sql(s"""select x.institucion, x.periodo_mes, x.id_interfaz, expl.id_cc, expl.cc_mon from (select institucion, periodo_mes, id_interfaz, map("14310 01 02", Act_adeu_bancos_pais_prest_interb, "14310 01 04", Act_adeu_bancos_pais_cred_com_ext,"14315 01 00", Act_adeu_bancos_pais_prov,"14320 01 02", Act_adeu_bancos_ext_prest_interb,"14320 01 04", Act_adeu_bancos_ext_cred_com_ext,"14325 01 00", Act_adeu_bancos_ext_prov,"14330 01 00", Act_adeu_bancos_bcentral,     "14500 00 10", Act_cred_cpcac_coloccom_coloc,"14950 01 00", Act_cred_cpcac_coloccom_prov,"14800 01 00", Act_cred_cpcac_pers_cons_cuotas,"14800 03 00", Act_cred_cpcac_pers_cons_tarcred,"14800 09 00", Act_cred_cpcac_pers_cons_otros,"14600 01 00", Act_cred_cpcac_pers_viv_coloc,"14100 00 00",Coloc_total) as cc_num from production_master.tbl_activos2_messys ) x lateral view explode(cc_num) expl as id_cc, cc_mon""")
+     // val Df1 = huemulBigDataGov.spark.sql(s"""select x.institucion, x.periodo_mes, x.id_interfaz, expl.id_cc, expl.cc_mon from (select institucion, periodo_mes, id_interfaz, map("14310 01 02", Act_adeu_bancos_pais_prest_interb, "14310 01 04", Act_adeu_bancos_pais_cred_com_ext,"14315 01 00", Act_adeu_bancos_pais_prov,"14320 01 02", Act_adeu_bancos_ext_prest_interb,"14320 01 04", Act_adeu_bancos_ext_cred_com_ext,"14325 01 00", Act_adeu_bancos_ext_prov,"14330 01 00", Act_adeu_bancos_bcentral,     "14500 00 10", Act_cred_cpcac_coloccom_coloc,"14950 01 00", Act_cred_cpcac_coloccom_prov,"14800 01 00", Act_cred_cpcac_pers_cons_cuotas,"14800 03 00", Act_cred_cpcac_pers_cons_tarcred,"14800 09 00", Act_cred_cpcac_pers_cons_otros,"14600 01 00", Act_cred_cpcac_pers_viv_coloc,"14100 00 00",Coloc_total) as cc_num from production_master.tbl_activos2_messys ) x lateral view explode(cc_num) expl as id_cc, cc_mon""")
+
+           val Df1 = huemulBigDataGov.spark.sql(s"""select x.institucion, x.periodo_mes, x.id_interfaz, expl.id_cc, expl.cc_mon from (select institucion, periodo_mes, id_interfaz, map("14310 01 02", Act_adeu_bancos_pais_prest_interb, "14310 01 04", Act_adeu_bancos_pais_cred_com_ext,"14315 01 00", Act_adeu_bancos_pais_prov,"14320 01 02", Act_adeu_bancos_ext_prest_interb,"14320 01 04", Act_adeu_bancos_ext_cred_com_ext,"14325 01 00", Act_adeu_bancos_ext_prov,"14330 01 00", Act_adeu_bancos_bcentral,     "14500 00 10", Act_cred_cpcac_coloccom_coloc,"14950 01 00", Act_cred_cpcac_coloccom_prov,"14800 01 00", Act_cred_cpcac_pers_cons_cuotas,"14800 03 00", Act_cred_cpcac_pers_cons_tarcred,"14800 09 00", Act_cred_cpcac_pers_cons_otros,"14600 01 00", Act_cred_cpcac_pers_viv_coloc,"14100 00 00",Coloc_total) as cc_num from production_master.tbl_activos2_messys where periodo_mes="$proc_date_new") x lateral view explode(cc_num) expl as id_cc, cc_mon""")
 
      Df1.createOrReplaceTempView("df_final") 
 
+     Df1.show()
 
        //-Creation output tables 
        
@@ -96,7 +99,7 @@ object process_fac_operacion {
 	   Control.NewStep("Loading Dimension Layer - fac_operacion") 
      
         val huemulTable_tbl_fac_operacion = new tbl_fac_operacion(huemulBigDataGov,Control) 
-        huemulTable_tbl_fac_operacion.DF_from_SQL("tbl_fac_operacion","""SELECT * FROM df_final""") 
+        huemulTable_tbl_fac_operacion.DF_from_SQL("tbl_fac_operacion_cmf","""SELECT * FROM df_final""") 
 
 
        
