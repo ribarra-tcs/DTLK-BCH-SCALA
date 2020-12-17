@@ -100,7 +100,7 @@ class tbl_activos1_messys (huemulBigDataGov: huemul_BigDataGovernance, Control: 
     val Act_tot = new huemul_Columns (DoubleType,true,"") 
     Act_tot.setNullable(true) 
     Act_tot.setIsPK(false) 
-    Act_tot.setDQ_MinDecimalValue(Decimal.apply(0),"COD_ERROR")
+    Act_tot.setDQ_MinDecimalValue(Decimal.apply(-10),"COD_ERROR") // for Activos1 for 202006 we have -10 value for Banco Nacional del Pueblo 
     Act_tot.setDQ_MaxDecimalValue(Decimal.apply(100000000),"COD_ERROR")
 
     val Cred_cont = new huemul_Columns (DoubleType,true,"") 
