@@ -162,7 +162,7 @@ class tbl_activos2_messys (huemulBigDataGov: huemul_BigDataGovernance, Control: 
     Coloc_total.setNullable(true) 
     Coloc_total.setIsPK(false) 
     Coloc_total.setDQ_MinDecimalValue(Decimal.apply(0),"COD_ERROR")   
-    Coloc_total.setDQ_MaxDecimalValue(Decimal.apply(300000000),"COD_ERROR") 
+    Coloc_total.setDQ_MaxDecimalValue(Decimal.apply(100000000),"COD_ERROR") 
     
   //-**********Ejemplo para aplicar DataQuality de Integridad Referencial 
  
