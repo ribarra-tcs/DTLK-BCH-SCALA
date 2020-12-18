@@ -84,7 +84,7 @@ object process_fac_operacion {
       
      // val Df1 = huemulBigDataGov.spark.sql(s"""select x.institucion, x.periodo_mes, x.id_interfaz, expl.id_cc, expl.cc_mon from (select institucion, periodo_mes, id_interfaz, map("14310 01 02", Act_adeu_bancos_pais_prest_interb, "14310 01 04", Act_adeu_bancos_pais_cred_com_ext,"14315 01 00", Act_adeu_bancos_pais_prov,"14320 01 02", Act_adeu_bancos_ext_prest_interb,"14320 01 04", Act_adeu_bancos_ext_cred_com_ext,"14325 01 00", Act_adeu_bancos_ext_prov,"14330 01 00", Act_adeu_bancos_bcentral,     "14500 00 10", Act_cred_cpcac_coloccom_coloc,"14950 01 00", Act_cred_cpcac_coloccom_prov,"14800 01 00", Act_cred_cpcac_pers_cons_cuotas,"14800 03 00", Act_cred_cpcac_pers_cons_tarcred,"14800 09 00", Act_cred_cpcac_pers_cons_otros,"14600 01 00", Act_cred_cpcac_pers_viv_coloc,"14100 00 00",Coloc_total) as cc_num from production_master.tbl_activos2_messys ) x lateral view explode(cc_num) expl as id_cc, cc_mon""")
 
-           val Df1 = huemulBigDataGov.spark.sql(s"""select x.institucion, x.periodo_mes, x.id_interfaz, expl.id_cc, expl.cc_mon from (select institucion, periodo_mes, id_interfaz, map("14310 01 02", Act_adeu_bancos_pais_prest_interb, "14310 01 04", Act_adeu_bancos_pais_cred_com_ext,"14315 01 00", Act_adeu_bancos_pais_prov,"14320 01 02", Act_adeu_bancos_ext_prest_interb,"14320 01 04", Act_adeu_bancos_ext_cred_com_ext,"14325 01 00", Act_adeu_bancos_ext_prov,"14330 01 00", Act_adeu_bancos_bcentral,     "14500 00 10", Act_cred_cpcac_coloccom_coloc,"14950 01 00", Act_cred_cpcac_coloccom_prov,"14800 01 00", Act_cred_cpcac_pers_cons_cuotas,"14800 03 00", Act_cred_cpcac_pers_cons_tarcred,"14800 09 00", Act_cred_cpcac_pers_cons_otros,"14600 01 00", Act_cred_cpcac_pers_viv_coloc,"14100 00 00",Coloc_total) as cc_num from production_master.tbl_activos2_messys where periodo_mes="$proc_date_new") x lateral view explode(cc_num) expl as id_cc, cc_mon""")
+           val Df1 = huemulBigDataGov.spark.sql(s"""select x.id_institucion as id_institucion,x.periodo_mes,x.id_interfaz,expl.id_cc,expl.cc_mon from (select b.id_institucion, a.institucion, a.periodo_mes, a.id_interfaz, map("14310 01 02",Act_adeu_bancos_pais_prest_interb,"14310 01 04", Act_adeu_bancos_pais_cred_com_ext,"14315 01 00", Act_adeu_bancos_pais_prov,"14320 01 02", Act_adeu_bancos_ext_prest_interb,"14320 01 04", Act_adeu_bancos_ext_cred_com_ext,"14325 01 00", Act_adeu_bancos_ext_prov,"14330 01 00", Act_adeu_bancos_bcentral,"14500 00 10",Act_cred_cpcac_coloccom_coloc,"14950 01 00", Act_cred_cpcac_coloccom_prov,"14800 01 00", Act_cred_cpcac_pers_cons_cuotas,"14800 03 00", Act_cred_cpcac_pers_cons_tarcred,"14800 09 00", Act_cred_cpcac_pers_cons_otros,"14600 01 00", Act_cred_cpcac_pers_viv_coloc,"14100 00 00",Coloc_total) as cc_num from production_master.tbl_activos2_messys a left join production_dim.tbl_dim_institution b on a.institucion = b.nombre_institucion where a.periodo_mes="$proc_date_new") x lateral view explode(cc_num) expl as id_cc, cc_mon""")
 
      Df1.createOrReplaceTempView("df_final") 
 
@@ -105,7 +105,7 @@ object process_fac_operacion {
        
         huemulTable_tbl_fac_operacion.id_interfaz.SetMapping("id_interfaz")
 	huemulTable_tbl_fac_operacion.periodo_mes.SetMapping("periodo_mes")
-	huemulTable_tbl_fac_operacion.id_institucion.SetMapping("institucion")
+	huemulTable_tbl_fac_operacion.id_institucion.SetMapping("id_institucion")
 	huemulTable_tbl_fac_operacion.id_cc.SetMapping("id_cc")
 	huemulTable_tbl_fac_operacion.cc_mon.SetMapping("cc_mon")
 		

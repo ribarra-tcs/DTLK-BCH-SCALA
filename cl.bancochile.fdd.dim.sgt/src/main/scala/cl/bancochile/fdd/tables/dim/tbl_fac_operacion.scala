@@ -86,7 +86,7 @@ class tbl_fac_operacion(huemulBigDataGov: huemul_BigDataGovernance, Control: hue
 //Set the relationship between Fact and Dimension table
     fk2_tbl_fac_operacion.AddRelationship (tbl_dim_institution.Id_institucion,id_interfaz)
 
-    val id_institucion = new huemul_Columns (StringType,true,"") 
+    val id_institucion = new huemul_Columns (IntegerType,true,"") 
     id_institucion.setNullable(false) 
     id_institucion.setIsPK(true)    
  
