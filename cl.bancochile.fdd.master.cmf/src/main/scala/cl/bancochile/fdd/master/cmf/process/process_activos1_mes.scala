@@ -7,6 +7,7 @@ import cl.bancochile.fdd.tables.master._
 import cl.bancochile.fdd.master.cmf.raw._ 
 import com.huemulsolutions.bigdata.common._ 
 import com.huemulsolutions.bigdata.control._ 
+import com.huemulsolutions.bigdata.datalake
 import java.util.Calendar; 
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions
@@ -25,9 +26,16 @@ object process_activos1_mes {
     var param_year = huemulBigDataGov.arguments.GetValue("year", null, "Debe especificar el parametro anio, ej: year=2017").toInt 
     var param_month = huemulBigDataGov.arguments.GetValue("month", null, "Debe especificar el parametro month, ej: month=12").toInt 
     var param_day  = huemulBigDataGov.arguments.GetValue("day", null, "Debe especificar el parametro dia, ej: day=25").toInt 
+   // var parm_month = huemulBigDataGov.arguments.GetValue("month")
     //var param_day = 0 
     val param_numMonths = huemulBigDataGov.arguments.GetValue("num_months", "1").toInt 
- 
+
+     /***
+   * Information about interfaces
+   */
+ var FileName = "hdfs://cluster-b54a-m/bancochile/gdd/data/raw/cmf/GDD_M_CMF_Activos1_".concat(param_year.toString).concat(param_month.toString)
+ println("Filename"+FileName)
+
     /*************** CICLO REPROCESO MASIVO **********************/ 
     var i: Int = 1 
     var FinOK: Boolean = true 
