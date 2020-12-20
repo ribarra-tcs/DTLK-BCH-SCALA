@@ -9,7 +9,8 @@ import com.huemulsolutions.bigdata.datalake._
 import com.huemulsolutions.bigdata.tables._ 
 import org.apache.spark.sql.types._ 
 import com.huemulsolutions.bigdata.control.huemulType_Frequency._ 
- 
+import com.huemulsolutions.bigdata.dataquality._
+import com.huemulsolutions.bigdata.dataquality.huemul_DQRecord
  
 /** 
  * Clase que permite abrir un archivo de texto, devuelve un objeto huemul_dataLake con un DataFrame de los datos 
@@ -142,7 +143,12 @@ CurrentSetting.DataSchemaConf.AddColumns("Car_deterio","Car_deterio",DecimalType
     
       control.NewStep("Aplicando Filtro") 
       //Si el archivo no tiene cabecera, comentar la linea de .filter 
- 
+
+      val cntRDD = this.DataRDD
+                   .filter{x=> x == this.Log.DataFirstRow}.map(row => row.split("\\|\\|")(6))
+      
+        val hdrCnt:Int = cntRDD.first().toInt
+
       val rowRDD = this.DataRDD 
             //filtro para considerar solo las filas que los dos primeros caracteres son numericos 
 //            .filter { x => x.length()>=4 && huemulBigDataGov.isAllDigits(x.substring(0, 2) )  } 
@@ -150,7 +156,42 @@ CurrentSetting.DataSchemaConf.AddColumns("Car_deterio","Car_deterio",DecimalType
             //filtro para dejar fuera la primera fila 
             .filter { x => x != this.Log.DataFirstRow  } 
             .map { x => this.ConvertSchema(x) } 
-             
+      
+
+       //****VALIDACION DQ*****
+      //**********************
+      control.NewStep("FILE RECON PROCESS: Valida que cantidad de registros estÃ© entre Header rec count y Header Rec Count")    
+      //validacion cantidad de filas
+     // val validanumfilas = this.DataFramehuemul.DQ_NumRowsInterval(this, hdrCnt, hdrCnt)      
+
+ def recon_DQ(ObjectData: Object, NumRowsExpected: Long, DQ_ExternalCode:String = null): huemul_DataQualityResult = {
+    val dt_start = huemulBigDataGov.getCurrentDateTimeJava()
+    val DQResult = new huemul_DataQualityResult()
+    var fileRows = rowRDD.count()
+    if (fileRows == NumRowsExpected ) {
+      DQResult.isError = false
+    } else if (fileRows < NumRowsExpected) {
+      DQResult.isError = true
+      DQResult.Description = s"huemul_DataFrame Error: Rows(${fileRows}) < NumExpected($NumRowsExpected)"
+      DQResult.Error_Code = 2003
+    } else if (fileRows > NumRowsExpected) {
+      DQResult.isError = true
+      DQResult.Description = s"huemul_DataFrame Error: Rows(${fileRows}) > NumExpected($NumRowsExpected)"
+      DQResult.Error_Code = 2004
+    }
+   DQResult
+ }
+     val validanumfilas = recon_DQ(rowRDD,hdrCnt,null)
+
+//     val validanumfilas = this.DataFramehuemul.DQ_NumRows(rowRDD,hdrCnt,null)
+      if (validanumfilas.isError)
+      {
+       control.RaiseError(s"user: Numero de Filas fuera del rango. ${validanumfilas.Description}")
+      }
+
+
+
+
       control.NewStep("Transformando datos a dataframe")       
  
       //Crea DataFrame en Data.DataDF 
