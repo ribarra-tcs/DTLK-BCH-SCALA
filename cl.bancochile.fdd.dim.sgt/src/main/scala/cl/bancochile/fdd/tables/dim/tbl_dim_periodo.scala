@@ -19,10 +19,10 @@ class tbl_dim_periodo (huemulBigDataGov: huemul_BigDataGovernance, Control: huem
   this.setStorageType(huemulType_StorageType.PARQUET) 
  
   //Ruta en HDFS donde se guardara el archivo PARQUET 
-  this.setGlobalPaths(huemulBigDataGov.GlobalSettings.MASTER_BigFiles_Path) 
+  this.setGlobalPaths(huemulBigDataGov.GlobalSettings.DIM_BigFiles_Path) 
  
   //Ruta en HDFS especifica para esta tabla (Globalpaths / localPath) 
-  this.setLocalPath("sgt/") 
+ // this.setLocalPath("sgt/") 
  
   //Frecuencia de actualizacion 
   this.setFrequency(huemulType_Frequency.NOT_SPECIFIED) 
