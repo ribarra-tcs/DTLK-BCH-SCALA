@@ -25,14 +25,9 @@ object process_activos1_mes {
     /*************** PARAMETROS **********************/ 
     var param_year = huemulBigDataGov.arguments.GetValue("year", null, "Debe especificar el parametro anio, ej: year=2017").toInt 
     var param_month = huemulBigDataGov.arguments.GetValue("month", null, "Debe especificar el parametro month, ej: month=12").toInt 
-    var param_day  = huemulBigDataGov.arguments.GetValue("day", null, "Debe especificar el parametro dia, ej: day=25").toInt 
-   // var parm_month = huemulBigDataGov.arguments.GetValue("month")
-    //var param_day = 0 
+    var param_day  = huemulBigDataGov.arguments.GetValue("day", null, "Debe especificar el parametro dia, ej: day=25").toInt  
     val param_numMonths = huemulBigDataGov.arguments.GetValue("num_months", "1").toInt 
 
-     /***
-   * Information about interfaces
-   */
  var FileName = "hdfs://cluster-b54a-m/bancochile/gdd/data/raw/cmf/GDD_M_CMF_Activos1_".concat(param_year.toString).concat(param_month.toString)
  println("Filename"+FileName)
 
@@ -64,7 +59,7 @@ object process_activos1_mes {
   } 
    
   /** 
-    masterizacion de archivo [[CAMBIAR]] <br> 
+    masterizacion de archivo tbl_Activos1_mes.scala <br> 
     param_year: anio de los datos  <br> 
     param_month: mes de los datos  <br> 
    */ 
@@ -76,34 +71,30 @@ object process_activos1_mes {
       Control.AddParamYear("param_year", param_year) 
       Control.AddParamMonth("param_month", param_month) 
       Control.AddParamDay("param_day",param_day) 
-         
-      //Control.AddParamInformation("param_oters", param_otherparams) 
+      
        
       /*************** ABRE RAW DESDE DATALAKE **********************/ 
       Control.NewStep("Abre DataLake") 
        
         var raw_activos1_mes = new raw_activos1_mes(huemulBigDataGov,Control) 
           if(!raw_activos1_mes.open("raw_activos1_mes",Control,param_year,param_month,param_day,0,0,0)){ 
-   //       if(!raw_activos1_mes.open("raw_activos1_mes",Control,param_year,param_month,0,0,0,0)){  
-    Control.RaiseError(s"error encontrado al tratar de abrir raw_activos1_mes , abortar: ${raw_activos1_mes.Error.ControlError_Message}") 
+     
+      Control.RaiseError(s"error encontrado al tratar de abrir raw_activos1_mes , abortar: ${raw_activos1_mes.Error.ControlError_Message}") 
         } 
        
       /*********************************************************/ 
       /*************** LOGICAS DE NEGOCIO **********************/ 
       /*********************************************************/ 
       Control.NewStep("Generar Lógica de negocio") 
-       
-    //  val Df1 = new huemul_DataFrame(huemulBigDataGov, Control) 
-    //      Df1.DF_from_SQL("DF_TEMPORAL","""SELECT * FROM raw_activos1_mes""") 
+   
 
-    val proc_date_new : String = huemulBigDataGov.arguments.GetValue("year", null, "Debe especificar el parametro anio,ej:year=2017").toString.concat(huemulBigDataGov.arguments.GetValue("month", null, "Debe especificar el parametro month, ej: month=12")).toString
+      val proc_date_new : String = huemulBigDataGov.arguments.GetValue("year", null, "Debe especificar el parametro anio,ej:year=2017").toString.concat(huemulBigDataGov.arguments.GetValue("month", null, "Debe especificar el parametro month, ej: month=12")).toString
       var Df2 = raw_activos1_mes.DataFramehuemul.DataFrame.withColumn("idx",org.apache.spark.sql.functions.monotonically_increasing_id()).withColumn("periodo_mes",org.apache.spark.sql.functions.lit(s"""$proc_date_new"""))	
 //Df2.show()
           Df2.createOrReplaceTempView("df_final") 
         
-      //-Unpersist unnecesary data 
-       
-        raw_activos1_mes.DataFramehuemul.DataFrame.unpersist() 
+      //-Unpersist unnecesary data  
+      raw_activos1_mes.DataFramehuemul.DataFrame.unpersist() 
        
        
        //-Creation output tables 
