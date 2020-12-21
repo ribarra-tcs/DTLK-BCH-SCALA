@@ -34,8 +34,7 @@ class raw_activos1_mes(huemulBigDataGov: huemul_BigDataGovernance, Control: huem
    CurrentSetting.LocalPath = "cmf/" 
  
    //configura el nombre del archivo (se pueden usar comodines) 
-   //CurrentSetting.FileName = "GDD_M_CMF_Activos1_{{YYYY}}{{MM}}{{DD}}.dat" 
-     CurrentSetting.FileName = "GDD_M_CMF_Activos1_{{YYYY}}{{MM}}.dat"  
+   CurrentSetting.FileName = "GDD_M_CMF_Activos1_{{YYYY}}{{MM}}.dat"  
    //especifica el tipo de archivo a leer 
    CurrentSetting.FileType = huemulType_FileType.TEXT_FILE 
  
@@ -52,12 +51,6 @@ class raw_activos1_mes(huemulBigDataGov: huemul_BigDataGovernance, Control: huem
    //========================================================= 
    // Auto-Gen columns information 
    //========================================================= 
- 
- 
-     
- 
-  //--demo 
- 
   
 CurrentSetting.DataSchemaConf.AddColumns("Institucion","Institucion",StringType,"Institucion")
 
@@ -106,12 +99,8 @@ CurrentSetting.DataSchemaConf.AddColumns("Car_deterio","Car_deterio",DecimalType
    
     CurrentSetting.LogSchemaConf.AddColumns("Cabecera negocio","Cabecera logico",StringType,"Es una cabecera",0,0) 
    
-   
-  //--Pie 
-   
  
-	 
-   //apply configuration 
+   //aplicar configuraciones 
    this.SettingByDate.append(CurrentSetting) 
     
       
@@ -160,11 +149,11 @@ CurrentSetting.DataSchemaConf.AddColumns("Car_deterio","Car_deterio",DecimalType
 
        //****VALIDACION DQ*****
       //**********************
-      control.NewStep("FILE RECON PROCESS: Valida que cantidad de registros estÃ© entre Header rec count y Header Rec Count")    
-      //validacion cantidad de filas
-     // val validanumfilas = this.DataFramehuemul.DQ_NumRowsInterval(this, hdrCnt, hdrCnt)      
+      control.NewStep("FILE RECON PROCESS: Valida que cantidad de registros está igual a lo definido en la encabezera")    
+     
+    //validacion cantidad de filas      
 
- def recon_DQ(ObjectData: Object, NumRowsExpected: Long, DQ_ExternalCode:String = null): huemul_DataQualityResult = {
+    def recon_DQ(ObjectData: Object, NumRowsExpected: Long, DQ_ExternalCode:String = null): huemul_DataQualityResult = {
     val dt_start = huemulBigDataGov.getCurrentDateTimeJava()
     val DQResult = new huemul_DataQualityResult()
     var fileRows = rowRDD.count()
@@ -188,7 +177,6 @@ CurrentSetting.DataSchemaConf.AddColumns("Car_deterio","Car_deterio",DecimalType
       {
        control.RaiseError(s"user: Numero de Filas fuera del rango. ${validanumfilas.Description}")
       }
-
 
 
 

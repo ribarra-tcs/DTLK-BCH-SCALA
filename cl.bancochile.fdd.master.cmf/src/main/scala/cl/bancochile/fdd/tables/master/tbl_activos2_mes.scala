@@ -49,9 +49,7 @@ class tbl_activos2_messys (huemulBigDataGov: huemul_BigDataGovernance, Control: 
 //  this.WhoCanRun_executeOnlyUpdate_addAccess("process_activos2_mes", 
 //                                        "cl.bancochile.fdd.master.cmf.process") 
    
-/**********   Columns Information   ****************************************/ 
-  //If table is Transaction. period must be create 
-    
+/**********   Columns Information   ****************************************/  
 
     val id_interfaz = new huemul_Columns (IntegerType,true,"")
     id_interfaz.setNullable(false)
@@ -163,9 +161,6 @@ class tbl_activos2_messys (huemulBigDataGov: huemul_BigDataGovernance, Control: 
     Coloc_total.setIsPK(false) 
     Coloc_total.setDQ_MinDecimalValue(Decimal.apply(0),"COD_ERROR")   
     Coloc_total.setDQ_MaxDecimalValue(Decimal.apply(300000000),"COD_ERROR") 
-    
-  //-**********Ejemplo para aplicar DataQuality de Integridad Referencial 
- 
-     
+         
   this.ApplyTableDefinition() 
 } 

@@ -13,9 +13,6 @@ import com.huemulsolutions.bigdata.dataquality._
 import com.huemulsolutions.bigdata.dataquality.huemul_DQRecord
 
 
-//ESTE CODIGO FUE GENERADO A PARTIR DEL TEMPLATE DEL SITIO WEB
-
-
 /**
  * Clase que permite abrir un archivo de texto, devuelve un objeto huemul_dataLake con un DataFrame de los datos
  * ejemplo de nombre: raw_institucion_mes
@@ -39,8 +36,7 @@ class raw_activos2_mes(huemulBigDataGov: huemul_BigDataGovernance, Control: huem
    CurrentSetting.LocalPath = "cmf/"
 
    //configura el nombre del archivo (se pueden usar comodines) 
-   //CurrentSetting.FileName = "GDD_M_CMF_Activos2_{{YYYY}}{{MM}}{{DD}}.dat" 
-     CurrentSetting.FileName = "GDD_M_CMF_Activos2_{{YYYY}}{{MM}}.dat"
+   CurrentSetting.FileName = "GDD_M_CMF_Activos2_{{YYYY}}{{MM}}.dat"
    //especifica el tipo de archivo a leer 
    CurrentSetting.FileType = huemulType_FileType.TEXT_FILE
 
@@ -57,9 +53,7 @@ class raw_activos2_mes(huemulBigDataGov: huemul_BigDataGovernance, Control: huem
    //========================================================= 
    // Auto-Gen columns information 
    //========================================================= 
-
-
-  //--demo  
+  
 
        CurrentSetting.DataSchemaConf.AddColumns("Institucion","Institucion",StringType,"Institucion")
 
@@ -126,10 +120,6 @@ class raw_activos2_mes(huemulBigDataGov: huemul_BigDataGovernance, Control: huem
 
     CurrentSetting.LogSchemaConf.AddColumns("Cabecera negocio","Cabecera logico",StringType,"Es una cabecera",0,0)
 
-
-  //--Pie 	 
-
-
    this.SettingByDate.append(CurrentSetting)
   
     /***
@@ -173,13 +163,13 @@ class raw_activos2_mes(huemulBigDataGov: huemul_BigDataGovernance, Control: huem
 
      
 
-       //****VALIDACION DQ*****
-      //**********************
-      control.NewStep("FILE RECON PROCESS: Valida que cantidad de registros estÃƒÂ© entre Header rec count y Header Rec Count")    
+    //****VALIDACION DQ*****
+    //**********************
+    
+    control.NewStep("Valida que cantidad de registros está igual que lo definido en la encabezera")    
       //validacion cantidad de filas
-     // val validanumfilas = this.DataFramehuemul.DQ_NumRowsInterval(this, hdrCnt, hdrCnt)      
-
- def recon_DQ(ObjectData: Object, NumRowsExpected: Long, DQ_ExternalCode:String = null): huemul_DataQualityResult = {
+           
+    def recon_DQ(ObjectData: Object, NumRowsExpected: Long, DQ_ExternalCode:String = null): huemul_DataQualityResult = {
     val dt_start = huemulBigDataGov.getCurrentDateTimeJava()
     val DQResult = new huemul_DataQualityResult()
     var fileRows = rowRDD.count()

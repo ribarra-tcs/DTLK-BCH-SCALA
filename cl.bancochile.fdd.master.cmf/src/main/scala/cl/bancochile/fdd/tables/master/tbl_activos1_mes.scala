@@ -50,7 +50,6 @@ class tbl_activos1_messys (huemulBigDataGov: huemul_BigDataGovernance, Control: 
 //                                        "cl.bancochile.fdd.master.cmf.process") 
    
 /**********   Columns Information   ****************************************/ 
-  //If table is Transaction. period must be create 
     
     val id_interfaz = new huemul_Columns (IntegerType,true,"") 
     id_interfaz.setNullable(false) 
@@ -100,7 +99,7 @@ class tbl_activos1_messys (huemulBigDataGov: huemul_BigDataGovernance, Control: 
     val Act_tot = new huemul_Columns (DoubleType,true,"") 
     Act_tot.setNullable(true) 
     Act_tot.setIsPK(false) 
-    Act_tot.setDQ_MinDecimalValue(Decimal.apply(-10),"COD_ERROR") // for Activos1 for 202006 we have -10 value for Banco Nacional del Pueblo 
+    Act_tot.setDQ_MinDecimalValue(Decimal.apply(-10),"COD_ERROR") // para Activos1 en 202006 encontramos valor -10 para Banco Nacional de Pueblo 
     Act_tot.setDQ_MaxDecimalValue(Decimal.apply(100000000),"COD_ERROR")
 
     val Cred_cont = new huemul_Columns (DoubleType,true,"") 
@@ -126,10 +125,6 @@ class tbl_activos1_messys (huemulBigDataGov: huemul_BigDataGovernance, Control: 
     val Car_deterio = new huemul_Columns (DoubleType,true,"") 
     Car_deterio.setNullable(true) 
     Car_deterio.setIsPK(false) 
-   
-  
-    
-  //-**********Ejemplo para aplicar DataQuality de Integridad Referencial 
  
      
   this.ApplyTableDefinition() 
