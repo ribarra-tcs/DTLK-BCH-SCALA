@@ -50,13 +50,7 @@ class raw_dim_cuentas_contables(huemulBigDataGov: huemul_BigDataGovernance, Cont
     
    //========================================================= 
    // Auto-Gen columns information 
-   //========================================================= 
- 
- 
-     
- 
-  //--demo 
- 
+   //=========================================================  
   
 CurrentSetting.DataSchemaConf.AddColumns("id_Cuenta_Contable","id_Cuenta_Contable",StringType,"id_Cuenta_Contable")
 
@@ -65,8 +59,6 @@ CurrentSetting.DataSchemaConf.AddColumns("producto_nom","producto_nom",StringTyp
 CurrentSetting.DataSchemaConf.AddColumns("Parent_Id","Parent_Id",StringType,"Parent_Id")
 
 CurrentSetting.DataSchemaConf.AddColumns("Tipo","Tipo",StringType,"Tipo")
-
-
    
  
   //========================================================== 
@@ -81,12 +73,7 @@ CurrentSetting.DataSchemaConf.AddColumns("Tipo","Tipo",StringType,"Tipo")
  
   //--Cabecera 
    
-    CurrentSetting.LogSchemaConf.AddColumns("Cabecera negocio","Cabecera logico",StringType,"Es una cabecera",0,0) 
-   
-   
-  //--Pie 
-   
- 
+    CurrentSetting.LogSchemaConf.AddColumns("Cabecera negocio","Cabecera logico",StringType,"Es una cabecera",0,0)  
 	 
    //apply configuration 
    this.SettingByDate.append(CurrentSetting) 

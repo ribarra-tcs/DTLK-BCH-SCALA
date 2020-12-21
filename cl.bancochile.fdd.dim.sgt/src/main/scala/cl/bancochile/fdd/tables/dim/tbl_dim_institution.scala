@@ -7,7 +7,8 @@ import com.huemulsolutions.bigdata.dataquality._
 import org.apache.spark.sql.types._ 
  
  
-class tbl_dim_institution (huemulBigDataGov: huemul_BigDataGovernance, Control: huemul_Control) extends huemul_Table(huemulBigDataGov, Control) with Serializable { 
+class tbl_dim_institution (huemulBigDataGov: huemul_BigDataGovernance, Control: huemul_Control) extends huemul_Table(huemulBigDataGov, Control) with Serializable {
+
   /**********   C O N F I G U R A C I O N   D E   L A   T A B L A   ****************************************/ 
   //Tipo de tabla, Master y Reference son catalogos sin particiones de periodo 
   this.setTableType(huemulType_Tables.Master) 
@@ -19,10 +20,7 @@ class tbl_dim_institution (huemulBigDataGov: huemul_BigDataGovernance, Control: 
   this.setStorageType(huemulType_StorageType.PARQUET) 
  
   //Ruta en HDFS donde se guardara el archivo PARQUET 
-  this.setGlobalPaths(huemulBigDataGov.GlobalSettings.DIM_BigFiles_Path) 
- 
-  //Ruta en HDFS especifica para esta tabla (Globalpaths / localPath) 
- // this.setLocalPath("dim/") 
+  this.setGlobalPaths(huemulBigDataGov.GlobalSettings.DIM_BigFiles_Path)  
  
   //Frecuencia de actualizacion 
   this.setFrequency(huemulType_Frequency.NOT_SPECIFIED) 
@@ -50,9 +48,6 @@ class tbl_dim_institution (huemulBigDataGov: huemul_BigDataGovernance, Control: 
 //                                        "cl.bancochile.fdd.dim.cmf.process") 
    
 /**********   Columns Information   ****************************************/ 
-  //If table is Transaction. period must be create 
-    
- 
    
     val Id_institucion = new huemul_Columns (IntegerType,true,"") 
     Id_institucion.setNullable(false) 
@@ -61,15 +56,7 @@ class tbl_dim_institution (huemulBigDataGov: huemul_BigDataGovernance, Control: 
     val Nombre_institucion = new huemul_Columns (StringType,true,"") 
     Nombre_institucion.setNullable(true) 
     Nombre_institucion.setIsPK(false) 
-   
-   
-   
-   
-   
   
-    
-  //-**********Ejemplo para aplicar DataQuality de Integridad Referencial 
- 
      
   this.ApplyTableDefinition() 
 } 

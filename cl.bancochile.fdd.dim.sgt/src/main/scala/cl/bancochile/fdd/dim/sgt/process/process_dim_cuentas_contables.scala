@@ -66,9 +66,8 @@ object process_dim_cuentas_contables {
       /*************** AGREGAR PARAMETROS A CONTROL **********************/ 
       Control.AddParamYear("param_year", param_year) 
       Control.AddParamMonth("param_month", param_month) 
-      Control.AddParamDay("param_day",param_day) 
-         
-      //Control.AddParamInformation("param_oters", param_otherparams) 
+      Control.AddParamDay("param_day",param_day)
+
        
       /*************** ABRE RAW DESDE DATALAKE **********************/ 
       Control.NewStep("Abre DataLake") 
@@ -87,22 +86,15 @@ object process_dim_cuentas_contables {
 	  
         val Df1 = new huemul_DataFrame(huemulBigDataGov, Control) 
         
-		Df1.DF_from_SQL("DF_TEMPORAL","""SELECT * FROM raw_dim_cuentas_contables""") 
+	Df1.DF_from_SQL("DF_TEMPORAL","""SELECT * FROM raw_dim_cuentas_contables""") 
 		
-		
-		 var Df1_Final = new huemul_DataFrame(huemulBigDataGov, Control) 
-		 
-		
-		// Df1_Final.DF_from_SQL("DF_TEMPORAL1",s"""SELECT CAST("$proc_date_new" as String) as proc_date,* FROM DF_TEMPORAL""") 
+	var Df1_Final = new huemul_DataFrame(huemulBigDataGov, Control) 
        
         
       //-Unpersist unnecesary data 
        
         raw_dim_cuentas_contables.DataFramehuemul.DataFrame.unpersist() 
-       
-       
-       //-Creation output tables 
-       
+             
       /*********************************************************/ 
       /*************** DATOS DE tbl_dim_cuentas_contables ************/ 
       /*********************************************************/ 
@@ -110,22 +102,16 @@ object process_dim_cuentas_contables {
 		
         val huemulTable_tbl_dim_cuentas_contables = new tbl_dim_cuentas_contables(huemulBigDataGov,Control) 
         
-		  huemulTable_tbl_dim_cuentas_contables.DF_from_SQL("TBL_Dim_cuentas_contables","""SELECT * FROM DF_TEMPORAL""") 
+	huemulTable_tbl_dim_cuentas_contables.DF_from_SQL("TBL_Dim_cuentas_contables","""SELECT * FROM DF_TEMPORAL""") 
  		 
-          huemulTable_tbl_dim_cuentas_contables.id_Cuenta_Contable.SetMapping("id_Cuenta_Contable") 
+        huemulTable_tbl_dim_cuentas_contables.id_Cuenta_Contable.SetMapping("id_Cuenta_Contable") 
          
-          huemulTable_tbl_dim_cuentas_contables.producto_nom.SetMapping("producto_nom") 
+        huemulTable_tbl_dim_cuentas_contables.producto_nom.SetMapping("producto_nom") 
 		  
-		  huemulTable_tbl_dim_cuentas_contables.Parent_Id.SetMapping("Parent_Id") 
+	huemulTable_tbl_dim_cuentas_contables.Parent_Id.SetMapping("Parent_Id") 
 		  
-		  huemulTable_tbl_dim_cuentas_contables.Tipo.SetMapping("Tipo") 
-         
-        
-         
-          
-         
-       
-         
+	huemulTable_tbl_dim_cuentas_contables.Tipo.SetMapping("Tipo") 
+                  
          
         if (!huemulTable_tbl_dim_cuentas_contables.executeOnlyInsert("DF_tbl_dim_cuentas_contables_Final")){ 
           Control.RaiseError(s"User: Error al intentar masterizar tbl_dim_cuentas_contables (${huemulTable_tbl_dim_cuentas_contables.Error_Code}): ${huemulTable_tbl_dim_cuentas_contables.Error_Text}") 
