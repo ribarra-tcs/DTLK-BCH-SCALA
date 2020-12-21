@@ -51,20 +51,11 @@ class raw_dim_institution(huemulBigDataGov: huemul_BigDataGovernance, Control: h
    //========================================================= 
    // Auto-Gen columns information 
    //========================================================= 
- 
- 
-     
- 
-  //--demo 
- 
-  
+   
 CurrentSetting.DataSchemaConf.AddColumns("Id_institucion","Id_institucion",IntegerType,"Id_institucion")
 
 CurrentSetting.DataSchemaConf.AddColumns("Nombre_institucion","Nombre_institucion",StringType,"Nombre_institucion")
 
-
-
- 
   //========================================================== 
   // Auto-Gen Log schema if applies 
   // ========================================================= 
@@ -78,11 +69,6 @@ CurrentSetting.DataSchemaConf.AddColumns("Nombre_institucion","Nombre_institucio
   //--Cabecera 
    
     CurrentSetting.LogSchemaConf.AddColumns("Cabecera negocio","Cabecera logico",StringType,"Es una cabecera",0,0) 
-   
-   
-  //--Pie 
-   
- 
 	 
    //apply configuration 
    this.SettingByDate.append(CurrentSetting) 

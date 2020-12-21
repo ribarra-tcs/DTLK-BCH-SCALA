@@ -12,14 +12,14 @@ import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions
  
  
-object process_cmf_operational_reporting { 
+object process_cmf_test { 
    
   /** 
    * Este codigo se ejecuta cuando se llama el JAR desde spark2-submit. el codigo esta preparado para hacer reprocesamiento masivo. 
   */ 
   def main(args : Array[String]) { 
     //Creacion API 
-    val huemulBigDataGov  = new huemul_BigDataGovernance(s"Operational Reporting of CMF - ${this.getClass.getSimpleName}", args, Global) 
+    val huemulBigDataGov  = new huemul_BigDataGovernance(s"Testing of Operational Reporting of CMF - ${this.getClass.getSimpleName}", args, Global) 
      
     /*************** PARAMETROS **********************/ 
     var param_year = huemulBigDataGov.arguments.GetValue("year", null, "Debe especificar el parametro anio, ej: year=2017").toInt 
@@ -64,16 +64,22 @@ object process_cmf_operational_reporting {
       Control.AddParamYear("param_year", param_year) 
       Control.AddParamMonth("param_month", param_month) 
       Control.AddParamDay("param_day",param_day) 
+         
+      //Control.AddParamInformation("param_oters", param_otherparams) 
        
-      /*************** Creacion Reporte Operacional Datos CMF **********************/ 
-      Control.NewStep("Creacion Reporte Operacional Datos CMF") 
+      /*************** Operational Reporting with CMF DATALAKE **********************/ 
+      Control.NewStep("TESTING: CMF Operational Reporting COMPLETENESS testing started") 
        
-      val Df1 = huemulBigDataGov.spark.sql(s"""select periodo_mes,b.nombre_institucion,c.producto_nom,id_cc,cc_mon, lag(cc_mon,1) over (partition by a.id_institucion,c.producto_nom,id_cc order by periodo_mes) as activo_nom_mes_ant from production_dim.tbl_fac_operacion a left join production_dim.tbl_dim_institution b on a.id_institucion = b.id_institucion left join production_dim.tbl_dim_cuentas_contables c on a.id_cc = c.id_cuenta_contable""")
+      val Df1 = huemulBigDataGov.spark.sql(s"""select a.periodo_mes, coloc_total, b.cc_mon, c.cc_mon as activo_nom from (select periodo_mes, sum(coloc_total) as coloc_total from production_master.tbl_activos2_messys group by periodo_mes) a left join (select periodo_mes, sum(cc_mon) cc_mon from production_dim.tbl_fac_operacion where id_cc = '14100 00 00' group by periodo_mes) b on a.periodo_mes = b.periodo_mes left join (select periodo_mes, sum(cc_mon) cc_mon from production_dim.tbl_cmf_operational_report where id_cc = '14100 00 00' group by periodo_mes) c on a.periodo_mes = c.periodo_mes""")
 
-      Df1.write.partitionBy("periodo_mes","nombre_institucion").mode(SaveMode.Overwrite).format("parquet").saveAsTable("production_dim.tbl_cmf_operational_report")
+
+        Df1.write.partitionBy("periodo_mes").mode(org.apache.spark.sql.SaveMode.Overwrite).format("parquet").saveAsTable("production_dim.tbl_cmf_completeness_test")
+
 	  
-      Df1.write.partitionBy("periodo_mes","nombre_institucion").mode("overwrite").format("parquet").save(s"""hdfs://10.128.0.3/bancochile/gdd/data/reporting/cmf_direct_operational_report""")       
-      
+	  val Df2 = huemulBigDataGov.spark.sql(s"""select periodo_mes, sum(cc_mon) / sum(activo_nom_mes_ant) from production_dim.tbl_cmf_operational_report group by periodo_mes""")
+       
+      Df2.write.partitionBy("periodo_mes").mode(org.apache.spark.sql.SaveMode.Overwrite).format("parquet").saveAsTable("production_dim.tbl_cmf_consistency_test")
+	  
       Control.FinishProcessOK 
     } catch { 
       case e: Exception => { 
@@ -88,4 +94,5 @@ object process_cmf_operational_reporting {
    
 } 
  
+
 

@@ -8,6 +8,7 @@ import org.apache.spark.sql.types._
  
  
 class tbl_dim_periodo (huemulBigDataGov: huemul_BigDataGovernance, Control: huemul_Control) extends huemul_Table(huemulBigDataGov, Control) with Serializable { 
+
   /**********   C O N F I G U R A C I O N   D E   L A   T A B L A   ****************************************/ 
   //Tipo de tabla, Master y Reference son catalogos sin particiones de periodo 
   this.setTableType(huemulType_Tables.Master) 
@@ -20,9 +21,7 @@ class tbl_dim_periodo (huemulBigDataGov: huemul_BigDataGovernance, Control: huem
  
   //Ruta en HDFS donde se guardara el archivo PARQUET 
   this.setGlobalPaths(huemulBigDataGov.GlobalSettings.DIM_BigFiles_Path) 
- 
-  //Ruta en HDFS especifica para esta tabla (Globalpaths / localPath) 
- // this.setLocalPath("sgt/") 
+  
  
   //Frecuencia de actualizacion 
   this.setFrequency(huemulType_Frequency.NOT_SPECIFIED) 
@@ -50,9 +49,7 @@ class tbl_dim_periodo (huemulBigDataGov: huemul_BigDataGovernance, Control: huem
 //                                        "cl.bancochile.fdd.dim.sgt.process") 
    
 /**********   Columns Information   ****************************************/ 
-  //If table is Transaction. period must be create 
-    
- 
+  
    
     val period_dia = new huemul_Columns (StringType,true,"") 
     period_dia.setNullable(false) 
@@ -121,16 +118,6 @@ class tbl_dim_periodo (huemulBigDataGov: huemul_BigDataGovernance, Control: huem
     period_ind_habil.setNullable(true) 
     period_ind_habil.setIsPK(false) 
    
-   
-   
-   
-   
-   
-   
-  
-    
-  //-**********Ejemplo para aplicar DataQuality de Integridad Referencial 
- 
      
   this.ApplyTableDefinition() 
 } 
