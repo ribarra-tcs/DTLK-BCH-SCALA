@@ -68,87 +68,56 @@ object process_dim_periodo {
       Control.AddParamMonth("param_month", param_month) 
       Control.AddParamDay("param_day",param_day) 
          
-      //Control.AddParamInformation("param_oters", param_otherparams) 
-       
-      /*************** ABRE RAW DESDE DATALAKE **********************/ 
-      Control.NewStep("Abre DataLake") 
-       
-     
-       
-       
       /*********************************************************/ 
       /*************** LOGICAS DE NEGOCIO **********************/ 
       /*********************************************************/ 
-      Control.NewStep("Generar Lógica de negocio") 
+      Control.NewStep("Generar Lógica de negocio")   
 	  
-	  
-        val Df1 = new huemul_DataFrame(huemulBigDataGov, Control) 
+      val Df1 = new huemul_DataFrame(huemulBigDataGov, Control) 
         
-		//Df1.DF_from_SQL("DF_TEMPORAL","""SELECT * FROM raw_dim_cuentan_contables""") 
-		
-		
-		 var Df1_Final = new huemul_DataFrame(huemulBigDataGov, Control) 
+      var Df1_Final = new huemul_DataFrame(huemulBigDataGov, Control) 
 		 
-		
-		// Df1_Final.DF_from_SQL("DF_TEMPORAL1",s"""SELECT CAST("$proc_date_new" as String) as proc_date,* FROM DF_TEMPORAL""") 
-       
-        
-      //-Unpersist unnecesary data 
-       
-     //   raw_dim_cuentan_contables.DataFramehuemul.DataFrame.unpersist() 
-       
-       
-       //-Creation output tables 
-	   
-	   
-	   
-       
+     
       /*********************************************************/ 
       /*************** DATOS DE tbl_dim_periodo ************/ 
       /*********************************************************/ 
-        Control.NewStep("Masterizacion de tbl_dim_periodo") 
-        val huemulTable_tbl_dim_periodo = new tbl_dim_periodo(huemulBigDataGov,Control) 
+      Control.NewStep("Masterizacion de tbl_dim_periodo") 
+      val huemulTable_tbl_dim_periodo = new tbl_dim_periodo(huemulBigDataGov,Control) 
         
-		  huemulTable_tbl_dim_periodo.DF_from_SQL("TBL_Dim_periodo","""SELECT * FROM production_dim.tbl_temp_dim_periodo""") 
+      huemulTable_tbl_dim_periodo.DF_from_SQL("TBL_Dim_periodo","""SELECT * FROM production_dim.tbl_temp_dim_periodo""") 
  		 
-          huemulTable_tbl_dim_periodo.period_dia.SetMapping("period_dia") 
+      huemulTable_tbl_dim_periodo.period_dia.SetMapping("period_dia") 
          
-          huemulTable_tbl_dim_periodo.period_fec_periodo.SetMapping("period_fec_periodo") 
+      huemulTable_tbl_dim_periodo.period_fec_periodo.SetMapping("period_fec_periodo") 
 		  
-		  huemulTable_tbl_dim_periodo.period_num_periodo.SetMapping("period_num_periodo") 
+      huemulTable_tbl_dim_periodo.period_num_periodo.SetMapping("period_num_periodo") 
 		  
-		  huemulTable_tbl_dim_periodo.period_nom_dia.SetMapping("period_nom_dia") 
+      huemulTable_tbl_dim_periodo.period_nom_dia.SetMapping("period_nom_dia") 
 		  
-		  huemulTable_tbl_dim_periodo.period_nom_dia_abr.SetMapping("period_nom_dia_abr")
+      huemulTable_tbl_dim_periodo.period_nom_dia_abr.SetMapping("period_nom_dia_abr")
 		  
-		  huemulTable_tbl_dim_periodo.period_num_dia_sem.SetMapping("period_num_dia_sem")
+      huemulTable_tbl_dim_periodo.period_num_dia_sem.SetMapping("period_num_dia_sem")
 		  
-		  huemulTable_tbl_dim_periodo.period_num_dia_mes.SetMapping("period_num_dia_mes")
+      huemulTable_tbl_dim_periodo.period_num_dia_mes.SetMapping("period_num_dia_mes")
 		  
-		  huemulTable_tbl_dim_periodo.period_num_dia_anio.SetMapping("period_num_dia_anio")
+      huemulTable_tbl_dim_periodo.period_num_dia_anio.SetMapping("period_num_dia_anio")
 		  
-		  huemulTable_tbl_dim_periodo.period_num_sem_mes.SetMapping("period_num_sem_mes")
+      huemulTable_tbl_dim_periodo.period_num_sem_mes.SetMapping("period_num_sem_mes")
 		  
-		   huemulTable_tbl_dim_periodo.period_num_sem_anio.SetMapping("period_num_sem_anio")
+      huemulTable_tbl_dim_periodo.period_num_sem_anio.SetMapping("period_num_sem_anio")
 		   
-		   huemulTable_tbl_dim_periodo.period_nom_mes.SetMapping("period_nom_mes")
+      huemulTable_tbl_dim_periodo.period_nom_mes.SetMapping("period_nom_mes")
 		   
-		   huemulTable_tbl_dim_periodo.period_nom_mes_abr.SetMapping("period_nom_mes_abr")
+      huemulTable_tbl_dim_periodo.period_nom_mes_abr.SetMapping("period_nom_mes_abr")
 		   
-		   huemulTable_tbl_dim_periodo.period_num_mes.SetMapping("period_num_mes")
+      huemulTable_tbl_dim_periodo.period_num_mes.SetMapping("period_num_mes")
 		   
-		   huemulTable_tbl_dim_periodo.period_num_anio.SetMapping("period_num_anio")
+      huemulTable_tbl_dim_periodo.period_num_anio.SetMapping("period_num_anio")
 		   
-		   huemulTable_tbl_dim_periodo.period_ind_habil.SetMapping("period_ind_habil")
+      huemulTable_tbl_dim_periodo.period_ind_habil.SetMapping("period_ind_habil")
+                  
          
-        
-         
-          
-         
-       
-         
-         
-        if (!huemulTable_tbl_dim_periodo.executeOnlyInsert("DF_tbl_dim_periodo_Final")){ 
+      if (!huemulTable_tbl_dim_periodo.executeOnlyInsert("DF_tbl_dim_periodo_Final")){ 
           Control.RaiseError(s"User: Error al intentar masterizar tbl_dim_periodo (${huemulTable_tbl_dim_periodo.Error_Code}): ${huemulTable_tbl_dim_periodo.Error_Text}") 
         } 
        

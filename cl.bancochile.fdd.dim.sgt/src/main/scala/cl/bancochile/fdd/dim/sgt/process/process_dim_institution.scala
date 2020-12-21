@@ -87,40 +87,28 @@ object process_dim_institution {
 	  
         val Df1 = new huemul_DataFrame(huemulBigDataGov, Control) 
         
-		Df1.DF_from_SQL("DF_TEMPORAL","""SELECT * FROM raw_dim_institution""") 
+	Df1.DF_from_SQL("DF_TEMPORAL","""SELECT * FROM raw_dim_institution""") 
 		
-		
-		 var Df1_Final = new huemul_DataFrame(huemulBigDataGov, Control) 
-		 
-		
-		// Df1_Final.DF_from_SQL("DF_TEMPORAL1",s"""SELECT CAST("$proc_date_new" as String) as proc_date,* FROM DF_TEMPORAL""") 
-       
+	var Df1_Final = new huemul_DataFrame(huemulBigDataGov, Control) 
+	             
         
       //-Unpersist unnecesary data 
        
         raw_dim_institution.DataFramehuemul.DataFrame.unpersist() 
        
-       
-       //-Creation output tables 
-       
+           
       /*********************************************************/ 
       /*************** DATOS DE tbl_dim_institution ************/ 
       /*********************************************************/ 
         Control.NewStep("Masterizacion de tbl_dim_institution") 
         val huemulTable_tbl_dim_institution = new tbl_dim_institution(huemulBigDataGov,Control) 
         
-		  huemulTable_tbl_dim_institution.DF_from_SQL("TBL_Dim_institution","""SELECT * FROM DF_TEMPORAL""") 
+	huemulTable_tbl_dim_institution.DF_from_SQL("TBL_Dim_institution","""SELECT * FROM DF_TEMPORAL""") 
  		 
-          huemulTable_tbl_dim_institution.Id_institucion.SetMapping("Id_institucion") 
+        huemulTable_tbl_dim_institution.Id_institucion.SetMapping("Id_institucion") 
          
-          huemulTable_tbl_dim_institution.Nombre_institucion.SetMapping("Nombre_institucion") 
-         
-        
-         
-          
-         
-       
-         
+        huemulTable_tbl_dim_institution.Nombre_institucion.SetMapping("Nombre_institucion") 
+                 
          
         if (!huemulTable_tbl_dim_institution.executeOnlyInsert("DF_tbl_dim_institution_Final")){ 
           Control.RaiseError(s"User: Error al intentar masterizar tbl_dim_institution (${huemulTable_tbl_dim_institution.Error_Code}): ${huemulTable_tbl_dim_institution.Error_Text}") 
@@ -145,4 +133,3 @@ object process_dim_institution {
    
 } 
  
-
