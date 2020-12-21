@@ -148,7 +148,7 @@ object process_dim_periodo {
        
          
          
-        if (!huemulTable_tbl_dim_periodo.executeFull("DF_tbl_dim_periodo_Final")){ 
+        if (!huemulTable_tbl_dim_periodo.executeOnlyInsert("DF_tbl_dim_periodo_Final")){ 
           Control.RaiseError(s"User: Error al intentar masterizar tbl_dim_periodo (${huemulTable_tbl_dim_periodo.Error_Code}): ${huemulTable_tbl_dim_periodo.Error_Text}") 
         } 
        

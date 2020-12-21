@@ -127,7 +127,7 @@ object process_dim_cuentas_contables {
        
          
          
-        if (!huemulTable_tbl_dim_cuentas_contables.executeFull("DF_tbl_dim_cuentas_contables_Final")){ 
+        if (!huemulTable_tbl_dim_cuentas_contables.executeOnlyInsert("DF_tbl_dim_cuentas_contables_Final")){ 
           Control.RaiseError(s"User: Error al intentar masterizar tbl_dim_cuentas_contables (${huemulTable_tbl_dim_cuentas_contables.Error_Code}): ${huemulTable_tbl_dim_cuentas_contables.Error_Text}") 
         } 
        

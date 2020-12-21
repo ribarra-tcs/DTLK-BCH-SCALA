@@ -122,7 +122,7 @@ object process_dim_institution {
        
          
          
-        if (!huemulTable_tbl_dim_institution.executeFull("DF_tbl_dim_institution_Final")){ 
+        if (!huemulTable_tbl_dim_institution.executeOnlyInsert("DF_tbl_dim_institution_Final")){ 
           Control.RaiseError(s"User: Error al intentar masterizar tbl_dim_institution (${huemulTable_tbl_dim_institution.Error_Code}): ${huemulTable_tbl_dim_institution.Error_Text}") 
         } 
        
